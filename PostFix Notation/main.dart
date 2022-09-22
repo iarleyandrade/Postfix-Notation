@@ -1,19 +1,38 @@
-import 'dart:ffi';
+import 'functions.dart';
 import 'dart:io';
 
 void main() {
   final stack = <double>[];
-  final elements = [];
+  double aux;
+  var elements = [];
+  final int top = -1;
   // final int top = -1;
 
-  print(' Write the expression: ');
+  print(' Escreva a expressão em notação pós-fixa: ');
   String? input = stdin.readLineSync();
 
   if (input == null) {
-    print('error: invalid expression');
+    print('error: expressão inválida');
   } else {
-    var list = input.split(' ');
+    elements = input.split(' ');
 
-    for (var i in list) {}
+    for (var element in elements) {
+      if (element == "+") {
+        aux = stack[top] + stack[top - 1];
+        pop(top: top, stack: stack);
+        stack[top] = aux;
+      } else if (element == "-") {
+        aux = stack[top - 1] - stack[top];
+        pop(top: top, stack: stack);
+      } else if (element == "*") {
+        aux = stack[top] * stack[top - 1];
+        pop(top: top, stack: stack);
+      } else if (element == "/") {
+        aux = stack[top - 1] / stack[top];
+        pop(top: top, stack: stack);
+      } else {
+        push(value: element, top: top, stack: stack);
+      }
+    }
   }
 }
